@@ -2,13 +2,20 @@ package databaseaccess;
 
 import org.eclipse.rdf4j.model.IRI;
 import org.eclipse.rdf4j.model.Literal;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.Statement;
 import org.eclipse.rdf4j.model.ValueFactory;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
 import org.eclipse.rdf4j.model.vocabulary.XMLSchema;
+import org.eclipse.rdf4j.query.QueryLanguage;
+import org.eclipse.rdf4j.query.TupleQueryResult;
+import org.eclipse.rdf4j.repository.RepositoryResult;
 
 import com.franz.agraph.repository.AGCatalog;
 import com.franz.agraph.repository.AGRepository;
 import com.franz.agraph.repository.AGRepositoryConnection;
 import com.franz.agraph.repository.AGServer;
+import com.franz.agraph.repository.AGTupleQuery;
 
 import entity.Country;
 import entity.Entity;
@@ -33,6 +40,7 @@ public class DataAccessObject {
 	private static String countryNamespace = "http://www.randomlink.org/country/";
 	private static String timeNamespace = "http://www.randomlink.org/time/";
 	private static String eventNamespace = "http://www.randomlink.org/event/";
+	private static String relationshipNamespace = "http://randomlink.org/relationship/";
 	
 	private AGRepositoryConnection connection = null;
 	private ValueFactory valueFactory = null;
@@ -44,6 +52,13 @@ public class DataAccessObject {
 	private IRI extractedDateOntology;
 	private IRI ageOntology;
 	private IRI headquarterOntology;
+	
+	private IRI personType;
+	private IRI organizationType;
+	private IRI locationType;
+	private IRI countryType;
+	private IRI timeType;
+	private IRI eventType;
 	
 	public DataAccessObject() {
 		AGServer server = new AGServer(SERVER_URL, USERNAME, PASSWORD);
@@ -59,6 +74,14 @@ public class DataAccessObject {
 		extractedDateOntology = valueFactory.createIRI(ontologyNamespace, "extracted-date");
 		ageOntology = valueFactory.createIRI(ontologyNamespace, "age");
 		headquarterOntology = valueFactory.createIRI(ontologyNamespace, "headquarter");
+		
+		personType = valueFactory.createIRI(ontologyNamespace, "Person");
+		organizationType = valueFactory.createIRI(ontologyNamespace, "Organization");
+		locationType = valueFactory.createIRI(ontologyNamespace, "Location");
+		countryType = valueFactory.createIRI(ontologyNamespace, "Country");
+		timeType = valueFactory.createIRI(ontologyNamespace, "Time");
+		eventType = valueFactory.createIRI(ontologyNamespace, "Event");
+		
 	}
 	
 	public AGRepositoryConnection getConnection() {
@@ -71,7 +94,13 @@ public class DataAccessObject {
 		}
 	}
 	
-	private void insertPerson(Person person) {
+	public void clear() {
+		if(connection != null) {
+			connection.clear();
+		}
+	}
+	
+	private IRI insertPerson(Person person) {
 		IRI iri = valueFactory.createIRI(personNamespace, person.getId());
 		Literal label = valueFactory.createLiteral(person.getLabel());
 		Literal description = valueFactory.createLiteral(person.getDescription());
@@ -79,14 +108,17 @@ public class DataAccessObject {
 		Literal extractedDate = valueFactory.createLiteral(person.getExtractedDate(), XMLSchema.DATE);
 		Literal age = valueFactory.createLiteral(person.getAge());
 		
+		connection.add(iri, RDF.TYPE, personType );
 		connection.add(iri, labelOntology, label);
 		connection.add(iri, descriptionOntology, description);
 		connection.add(iri, extractedLinkOntology, extractedLink);
 		connection.add(iri, extractedDateOntology, extractedDate);
 		connection.add(iri, ageOntology, age);
+		
+		return iri;
 	}
 	
-	private void insertOrganization(Organization organization) {
+	private IRI insertOrganization(Organization organization) {
 		IRI iri = valueFactory.createIRI(organizationNamespace, organization.getId());
 		Literal label = valueFactory.createLiteral(organization.getLabel());
 		Literal description = valueFactory.createLiteral(organization.getDescription());
@@ -94,83 +126,126 @@ public class DataAccessObject {
 		Literal extractedDate = valueFactory.createLiteral(organization.getExtractedDate(), XMLSchema.DATE);
 		Literal headquarter = valueFactory.createLiteral(organization.getHeadquarter());
 		
+		connection.add(iri, RDF.TYPE, organizationType);
 		connection.add(iri, labelOntology, label);
 		connection.add(iri, descriptionOntology, description);
 		connection.add(iri, extractedLinkOntology, extractedLink);
 		connection.add(iri, extractedDateOntology, extractedDate);
 		connection.add(iri, headquarterOntology, headquarter);
+		
+		return iri;
 	}
 	
-	private void insertLocation(Location location) {
+	private IRI insertLocation(Location location) {
 		IRI iri = valueFactory.createIRI(locationNamespace, location.getId());
 		Literal label = valueFactory.createLiteral(location.getLabel());
 		Literal description = valueFactory.createLiteral(location.getDescription());
 		Literal extractedLink = valueFactory.createLiteral(location.getExtractedLink());
 		Literal extractedDate = valueFactory.createLiteral(location.getExtractedDate(), XMLSchema.DATE);
 		
+		connection.add(iri, RDF.TYPE, locationType);
 		connection.add(iri, labelOntology, label);
 		connection.add(iri, descriptionOntology, description);
 		connection.add(iri, extractedLinkOntology, extractedLink);
 		connection.add(iri, extractedDateOntology, extractedDate);
+		
+		return iri;
 	}
 	
-	private void insertCountry(Country country) {
+	private IRI insertCountry(Country country) {
 		IRI iri = valueFactory.createIRI(countryNamespace, country.getId());
 		Literal label = valueFactory.createLiteral(country.getLabel());
 		Literal description = valueFactory.createLiteral(country.getDescription());
 		Literal extractedLink = valueFactory.createLiteral(country.getExtractedLink());
 		Literal extractedDate = valueFactory.createLiteral(country.getExtractedDate(), XMLSchema.DATE);
 		
+		connection.add(iri, RDF.TYPE, countryType);
 		connection.add(iri, labelOntology, label);
 		connection.add(iri, descriptionOntology, description);
 		connection.add(iri, extractedLinkOntology, extractedLink);
 		connection.add(iri, extractedDateOntology, extractedDate);
+		
+		return iri;
 	}
 	
-	private void insertTime(Time time) {
+	private IRI insertTime(Time time) {
 		IRI iri = valueFactory.createIRI(timeNamespace, time.getId());
 		Literal label = valueFactory.createLiteral(time.getLabel());
 		Literal description = valueFactory.createLiteral(time.getDescription());
 		Literal extractedLink = valueFactory.createLiteral(time.getExtractedLink());
 		Literal extractedDate = valueFactory.createLiteral(time.getExtractedDate(), XMLSchema.DATE);
 		
+		connection.add(iri, RDF.TYPE, timeType);
 		connection.add(iri, labelOntology, label);
 		connection.add(iri, descriptionOntology, description);
 		connection.add(iri, extractedLinkOntology, extractedLink);
 		connection.add(iri, extractedDateOntology, extractedDate);
+		
+		return iri;
 	}
 	
-	private void insertEvent(Event event) {
+	private IRI insertEvent(Event event) {
 		IRI iri = valueFactory.createIRI(eventNamespace, event.getId());
 		Literal label = valueFactory.createLiteral(event.getLabel());
 		Literal description = valueFactory.createLiteral(event.getDescription());
 		Literal extractedLink = valueFactory.createLiteral(event.getExtractedLink());
 		Literal extractedDate = valueFactory.createLiteral(event.getExtractedDate(), XMLSchema.DATE);
 		
+		connection.add(iri, RDF.TYPE, eventType);
 		connection.add(iri, labelOntology, label);
 		connection.add(iri, descriptionOntology, description);
 		connection.add(iri, extractedLinkOntology, extractedLink);
 		connection.add(iri, extractedDateOntology, extractedDate);
+		
+		return iri;
 	}
 	
-	public void insertEntity(Entity entity) {
+	public IRI insertEntity(Entity entity) {
 		if(entity instanceof Person) {
-			insertPerson((Person) entity); 
+			return insertPerson((Person) entity); 
 		}
 		else if(entity instanceof Organization) {
-			insertOrganization((Organization) entity);
+			return insertOrganization((Organization) entity);
 		}
 		else if(entity instanceof Location) {
-			insertLocation((Location) entity);
+			return insertLocation((Location) entity);
 		}
 		else if(entity instanceof Country) {
-			insertCountry((Country) entity);
+			return insertCountry((Country) entity);
 		}
 		else if(entity instanceof Time) {
-			insertTime((Time) entity);
+			return insertTime((Time) entity);
 		}
 		else if(entity instanceof Event) {
-			insertEvent((Event) entity);
+			return insertEvent((Event) entity);
 		}
+		return null;
+	}
+	
+	public IRI createRelationship(String relationshipDescription) {
+		return valueFactory.createIRI(relationshipNamespace, relationshipDescription);
+	}
+	
+	public void insertStatement(IRI entity1, IRI relationship, IRI entity2) {
+		connection.add(entity1, relationship, entity2);
+	}
+	
+	public long querySPARQLTime(String queryString) {
+		AGTupleQuery tupleQuery = connection.prepareTupleQuery(QueryLanguage.SPARQL, queryString);
+		long startTime = System.currentTimeMillis();
+		
+		TupleQueryResult result = tupleQuery.evaluate();
+		
+		long endTime = System.currentTimeMillis();
+		result.close();
+		return endTime - startTime;
+	}
+	
+	public long queryStatementTime(IRI subject, IRI predicate, IRI object, Resource context) {
+		long startTime = System.currentTimeMillis();
+		RepositoryResult<Statement> statements = connection.getStatements(subject, predicate, object, context);
+		long endTime = System.currentTimeMillis();
+		statements.close();
+		return endTime - startTime;
 	}
 }
