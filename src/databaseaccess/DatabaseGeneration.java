@@ -59,10 +59,12 @@ public class DatabaseGeneration {
 		randomEntityGeneration.setTimeGeneration(timeLabelFileName, timeDescriptionFileName);
 		randomEntityGeneration.setEventGeneration(eventLabelFileName, eventDescriptionFileName);
 		
+		relationshipGeneration.setRelationshipDescriptionList("relationshipDescription.txt");
+		
 		entityIRIList = new ArrayList<>();
 	}
 	
-	public void generateEntity(int numberOfEntity) {
+	private void generateEntity(int numberOfEntity) {
 		if(numberOfEntity > noEntity) {
 			Entity entity = null;
 			for(int i = 0; i < numberOfEntity - noEntity; i++) {
@@ -73,7 +75,7 @@ public class DatabaseGeneration {
 		noEntity = numberOfEntity;
 	}
 	
-	public void generateRelationship(int numberOfRelationship) {
+	private void generateRelationship(int numberOfRelationship) {
 		if(numberOfRelationship > noRelationship) {
 			IRI entity1 = null;
 			IRI entity2 = null;
@@ -86,6 +88,19 @@ public class DatabaseGeneration {
 				dataAcessObject.insertStatement(entity1, relationship, entity2);
 			}
 		}
+		noRelationship = numberOfRelationship;
 	}
 	
+	public void generateDatabase(int numberOfEntity, int numberOfRelationship) {
+		generateEntity(numberOfEntity);
+		generateRelationship(numberOfRelationship);
+	}
+	
+	public DataAccessObject getDataAccessObject() {
+		return dataAcessObject;
+	}
+	
+	public void clearStatements() {
+		dataAcessObject.clear();
+	}
 }

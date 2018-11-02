@@ -20,6 +20,7 @@ public class RandomEntityGeneration {
 
 	public void setEntityGeneration(int noLink, int noDate, String startDate) {
 		ENTITY_GENERATION.setExtractedDateList(noDate, startDate);
+		ENTITY_GENERATION.setExtractedLinkList(noLink);
 	}
 
 	public void setPersonGeneration(String personLabelFileName, String personDescriptionFileName) {

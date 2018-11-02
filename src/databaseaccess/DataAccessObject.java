@@ -248,4 +248,54 @@ public class DataAccessObject {
 		statements.close();
 		return endTime - startTime;
 	}
+
+	public IRI getLabelOntology() {
+		return labelOntology;
+	}
+
+	public IRI getDescriptionOntology() {
+		return descriptionOntology;
+	}
+
+	public IRI getExtractedLinkOntology() {
+		return extractedLinkOntology;
+	}
+
+	public IRI getExtractedDateOntology() {
+		return extractedDateOntology;
+	}
+
+	public IRI getAgeOntology() {
+		return ageOntology;
+	}
+
+	public IRI getHeadquarterOntology() {
+		return headquarterOntology;
+	}
+
+	public IRI getPersonType() {
+		return personType;
+	}
+
+	public IRI getOrganizationType() {
+		return organizationType;
+	}
+
+	public IRI getLocationType() {
+		return locationType;
+	}
+
+	public IRI getCountryType() {
+		return countryType;
+	}
+
+	public IRI getTimeType() {
+		return timeType;
+	}
+
+	public IRI getEventType() {
+		return eventType;
+	}
+	
+	
 }

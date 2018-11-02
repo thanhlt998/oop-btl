@@ -49,6 +49,6 @@ public class LocationGeneration extends EntityGeneration{
 	}
 	
 	public Location generateLocation() {
-		return new Location(this.generateRandomLabel(), this.generateRandomDescription(), this.generateRandomExtractedLink(), this.generateRandomExtractedLink());
+		return new Location(this.generateRandomLabel(), this.generateRandomDescription(), this.generateRandomExtractedLink(), this.generateRandomExtractedDate());
 	}
 }
