@@ -9,9 +9,9 @@ import java.util.List;
 import java.util.Random;
 
 public class EntityGeneration {
-	private static final Random RANDOM = new Random();
-	private static List<String> extractedLinkList = new ArrayList<>();
-	private static List<String> extractedDateList = new ArrayList<>();
+	protected static final Random RANDOM = new Random();
+	protected static List<String> extractedLinkList = new ArrayList<>();
+	protected static List<String> extractedDateList = new ArrayList<>();
 	
 	public void setExtractedLinkList(int noLink) {
 		String prefix = "http://www.randomlink.org/link";

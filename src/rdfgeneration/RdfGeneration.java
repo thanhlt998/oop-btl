@@ -1,16 +1,11 @@
-package databaseaccess;
+package rdfgeneration;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
-import org.eclipse.rdf4j.model.IRI;
-
-import entity.Entity;
 import entitygeneration.RandomEntityGeneration;
 import relationship.RelationshipGeneration;
 
-public class DatabaseGeneration {
+public class RdfGeneration {
 	private static final Random RANDOM = new Random();
 
 	private static int noEntity = 0;
@@ -39,16 +34,20 @@ public class DatabaseGeneration {
 	private static String eventLabelFileName = "eventLabel.txt";
 	private static String eventDescriptionFileName = "eventDescription.txt";
 
-	private DataAccessObject dataAcessObject;
-	private DataInsertion dataInsertion;
+	private static String ontologyNamespace = "http://www.randomlink.org/ontology/";
+
+	private static String personNamespace = "http://www.randomlink.org/person/";
+	private static String organizationNamespace = "http://www.randomlink.org/organization/";
+	private static String locationNamespace = "http://www.randomlink.org/location/";
+	private static String countryNamespace = "http://www.randomlink.org/country/";
+	private static String timeNamespace = "http://www.randomlink.org/time/";
+	private static String eventNamespace = "http://www.randomlink.org/event/";
+	private static String relationshipNamespace = "http://randomlink.org/relationship/";
+
 	private RandomEntityGeneration randomEntityGeneration;
 	private RelationshipGeneration relationshipGeneration;
 
-	private List<IRI> entityIRIList;
-
-	public DatabaseGeneration(DataAccessObject dataAccessObject) {
-		this.dataAcessObject = dataAccessObject;
-		dataInsertion = new DataInsertion(this.dataAcessObject.getConnection());
+	public RdfGeneration() {
 		randomEntityGeneration = new RandomEntityGeneration();
 		relationshipGeneration = new RelationshipGeneration();
 
@@ -62,57 +61,9 @@ public class DatabaseGeneration {
 		randomEntityGeneration.setEventGeneration(eventLabelFileName, eventDescriptionFileName);
 
 		relationshipGeneration.setRelationshipDescriptionList("relationshipDescription.txt");
-
-		entityIRIList = new ArrayList<>();
 	}
 
-	private void generateEntity(int numberOfEntity) {
-		if (numberOfEntity > noEntity) {
-			Entity entity = null;
-			for (int i = 0; i < numberOfEntity - noEntity; i++) {
-				entity = randomEntityGeneration.generateRandomEntity();
-				entityIRIList.add(dataInsertion.insertEntity(entity));
-			}
-		}
-		noEntity = numberOfEntity;
+	public void generateRdfFile(int noEntity, int noRelationship, int outputFileName) {
+
 	}
-
-	private void generateRelationship(int numberOfRelationship) {
-		if (numberOfRelationship > noRelationship) {
-			IRI entity1 = null;
-			IRI entity2 = null;
-			IRI relationship = null;
-
-			for (int i = 0; i < numberOfRelationship - noRelationship; i++) {
-				entity1 = entityIRIList.get(RANDOM.nextInt(noEntity));
-				entity2 = entityIRIList.get(RANDOM.nextInt(noEntity));
-				relationship = dataInsertion
-						.createRelationship(relationshipGeneration.generateRandomRelationshipDescription());
-				dataInsertion.insertStatement(entity1, relationship, entity2);
-			}
-		}
-		noRelationship = numberOfRelationship;
-	}
-
-	public void generateDatabase(int numberOfEntity, int numberOfRelationship) {
-		generateEntity(numberOfEntity);
-		generateRelationship(numberOfRelationship);
-	}
-
-	public DataAccessObject getDataAcessObject() {
-		return dataAcessObject;
-	}
-
-	public void setDataAcessObject(DataAccessObject dataAcessObject) {
-		this.dataAcessObject = dataAcessObject;
-	}
-
-	public DataInsertion getDataInsertion() {
-		return dataInsertion;
-	}
-
-	public void setDataInsertion(DataInsertion dataInsertion) {
-		this.dataInsertion = dataInsertion;
-	}
-
 }

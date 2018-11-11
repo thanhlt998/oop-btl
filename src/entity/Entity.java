@@ -1,11 +1,11 @@
 package entity;
 
 public class Entity {
-	private String id;
-	private String label;
-	private String description;
-	private String extractedLink;
-	private String extractedDate;
+	protected String id;
+	protected String label;
+	protected String description;
+	protected String extractedLink;
+	protected String extractedDate;
 
 	public Entity() {
 
