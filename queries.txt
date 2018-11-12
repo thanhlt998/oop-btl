@@ -3,9 +3,18 @@ select ?s where { ?s rdf:type <http://www.randomlink.org/ontology/Country> }
 select ?s where { ?s rdf:type <http://www.randomlink.org/ontology/Event> }
 select ?s where { ?s rdf:type <http://www.randomlink.org/ontology/Location> }
 select ?s where { ?s rdf:type <http://www.randomlink.org/ontology/Organization> }
-select ?s where { ?s rdf:type <http://www.randomlink.org/ontology/Time }
-select ?s where { ?s <http://www.randomlink.org/ontology/age> ?o . filter ((?o >= 18) && (?o <= 65) }
+select ?s where { ?s rdf:type <http://www.randomlink.org/ontology/Time> }
+select ?s where { ?s <http://www.randomlink.org/ontology/age> ?o . filter ((?o >= 18) && (?o <= 65)) }
 select ?s where { ?s <http://www.randomlink.org/ontology/headquarter> ?o . filter regex(?o, "India") }
 select ?s ?p ?o where { ?s ?p ?o . filter regex(?o, "Vietnam")}
 select ?s where { ?s <http://www.randomlink.org/ontology/label> ?o . filter regex(?o, "Mathew")}
 (select (?person ?label ?desc) (q ?person !rdf:type !ns:Person) (q ?person !ns:label ?label) (q ?person !ns:description ?desc))
+(select (?personlabel ?age) (q ?person !ns:age ?age) (upi< !"18"^^xsd:int ?age) (upi< ?age !"65"^^xsd:int) (q ?person !ns:label ?personlabel))
+(select (?event ?country) (q ?event !rdf:type !ns:Event) (q ?country !rdf:type !ns:Country) (q ?event !rela:occur ?country))
+(select (?eventlabel) (q ?event !rdf:type !ns:Event) (q ?event !ns:label ?eventlabel) (q ?event !ns:extracted-date ?date) (upi< !"2012-01-01"^^xsd:date ?date))
+(select (?organizationlabel) (q ?organization !rdf:type !ns:Organization) (q ?organization !ns:label ?organizationlabel) (q ?organization !ns:headquarter !"Hanoi, Vietnam"))
+(select (?personlabel) (q ?person !rdf:type !ns:Person) (q ?person !ns:description !"She is a artist") (q ?person !ns:label ?personlabel))
+(select (?label ?locationlabel) (q ?object !rela:arrive ?location) (q ?location !rdf:type !ns:Location) (q ?location !ns:label ?locationlabel) (q ?object !ns:label ?label))
+(select (?eventlabel ?countrylabel) (q ?event !rela:occur ?country) (q ?event !rdf:type !ns:Event) (q ?country !rdf:type !ns:Country) (q ?event !ns:label ?eventlabel) (q ?country !ns:label ?countrylabel))
+(select (?personlabel ?organizationlabel) (q ?person !rela:work ?organization) (q ?person !rdf:type !ns:Person) (q ?organization !rdf:type !ns:Organization) (q ?person !ns:label ?personlabel) (q ?organization !ns:label ?organizationlabel))
+(select (?eventlabel ?timelabel) (q ?event !rela:occur ?time) (q ?event !rdf:type !ns:Event) (q ?time !rdf:type !ns:Time) (q ?event !ns:label ?eventlabel) (q ?time !ns:label ?timelabel))

@@ -28,7 +28,7 @@ public class DataInsertion {
 	private static String countryNamespace = "http://www.randomlink.org/country/";
 	private static String timeNamespace = "http://www.randomlink.org/time/";
 	private static String eventNamespace = "http://www.randomlink.org/event/";
-	private static String relationshipNamespace = "http://randomlink.org/relationship/";
+	private static String relationshipNamespace = "http://www.randomlink.org/relationship/";
 
 	private IRI labelOntology;
 	private IRI descriptionOntology;
@@ -48,6 +48,9 @@ public class DataInsertion {
 	public DataInsertion(AGRepositoryConnection connection) {
 		this.connection = connection;
 		this.valueFactory = connection.getValueFactory();
+		
+		setNamespace("ns", ontologyNamespace);
+		setNamespace("rela", relationshipNamespace);
 
 		labelOntology = valueFactory.createIRI(ontologyNamespace, "label");
 		descriptionOntology = valueFactory.createIRI(ontologyNamespace, "description");
@@ -180,6 +183,10 @@ public class DataInsertion {
 			return insertEvent((Event) entity);
 		}
 		return null;
+	}
+	
+	public void setNamespace(String prefix, String name) {
+		connection.setNamespace(prefix, name);
 	}
 
 	public IRI createRelationship(String relationshipDescription) {
