@@ -15,8 +15,8 @@ import databaseaccess.DatabaseGeneration;
 import databaseaccess.Query;
 
 public class App {
-	private static int[] n = { 100, 5000, 60000, 1000000, 15000000 };
-	private static int[] m = { 200, 7000, 80000, 2000000, 17000000 };
+	private static int[] n = { 100, 5000, 60000, 300000, 800000 };
+	private static int[] m = { 200, 7000, 80000, 400000, 800000 };
 	private static ArrayList<String> queryList;
 	private static FileOutputStream outputStream;
 
@@ -33,12 +33,8 @@ public class App {
 		
 		try {
 			outputStream.write(new String("Begin at " + new Date().toString() + "\n").getBytes());
-			outputStream
-			.write(new String("Query 10 basic SPARQL query: \n")
-					.getBytes());
-			outputStream.write(new String("\t").getBytes());
 			
-			for (int i = 0; i < 2; i++) {
+			for (int i = 0; i < n.length; i++) {
 				databaseGeneration.generateDatabase(n[i], m[i]);
 
 				outputStream.write(new String("(" + n[i] + ", " + m[i] + ")\t").getBytes());
