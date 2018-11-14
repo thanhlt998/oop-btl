@@ -15,8 +15,8 @@ import databaseaccess.DatabaseGeneration;
 import databaseaccess.Query;
 
 public class App {
-	private static int[] n = { 100, 5000, 60000, 300000, 800000 };
-	private static int[] m = { 200, 7000, 80000, 400000, 800000 };
+	private static int[] n = { 100, 5000, 60000, 300000, 600000 };
+	private static int[] m = { 200, 7000, 80000, 400000, 1200000 };
 	private static ArrayList<String> queryList;
 	private static FileOutputStream outputStream;
 
