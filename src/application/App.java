@@ -53,10 +53,10 @@ public class App {
 			}
 			outputStream.write(new String("End at " + new Date().toString()).getBytes());
 			outputStream.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+		} catch (IOException | InterruptedException e) {
 			e.printStackTrace();
 		}
+		
 	}
 
 	public static void setQueryList(String fileName) {

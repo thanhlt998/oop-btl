@@ -32,7 +32,6 @@ public class DataInsertion {
 
 	private IRI labelOntology;
 	private IRI descriptionOntology;
-	// private IRI identifyOntology;
 	private IRI extractedLinkOntology;
 	private IRI extractedDateOntology;
 	private IRI ageOntology;
@@ -54,7 +53,6 @@ public class DataInsertion {
 
 		labelOntology = valueFactory.createIRI(ontologyNamespace, "label");
 		descriptionOntology = valueFactory.createIRI(ontologyNamespace, "description");
-		// identifyOntology = valueFactory.createIRI(ontologyNamespace, "identify");
 		extractedLinkOntology = valueFactory.createIRI(ontologyNamespace, "extracted-link");
 		extractedDateOntology = valueFactory.createIRI(ontologyNamespace, "extracted-date");
 		ageOntology = valueFactory.createIRI(ontologyNamespace, "age");
