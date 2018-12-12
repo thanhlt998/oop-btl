@@ -11,8 +11,8 @@ import multithread.RelationshipGenerationThread;
 import relationship.RelationshipGeneration;
 
 public class DatabaseGeneration {
-	private static final int NO_ENTITY_GENERATION_THREAD = 8;
-	private static final int NO_RELATIONSHIP_GENERATION_THREAD = 8;
+	private static final int NO_ENTITY_GENERATION_THREAD = 10;
+	private static final int NO_RELATIONSHIP_GENERATION_THREAD = 10;
 
 	private static int noEntity = 0;
 	private static int noRelationship = 0;

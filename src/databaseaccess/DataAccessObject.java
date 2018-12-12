@@ -6,18 +6,24 @@ import com.franz.agraph.repository.AGRepositoryConnection;
 import com.franz.agraph.repository.AGServer;
 
 public class DataAccessObject {
-	private static final String SERVER_URL = "http://localhost:10035";
-	private static final String CATALOG_ID = "/";
-	private static final String REPOSITORY_ID = "oop";
-	private static final String USERNAME = "test";
-	private static final String PASSWORD = "xyzzy";
+	private String serverUrl;
+	private String catalogId;
+	private String repositoryId;
+	private String username;
+	private String password;
 
 	private AGRepositoryConnection connection = null;
 
-	public DataAccessObject() {
-		AGServer server = new AGServer(SERVER_URL, USERNAME, PASSWORD);
-		AGCatalog catalog = server.getCatalog(CATALOG_ID);
-		AGRepository myRepository = catalog.createRepository(REPOSITORY_ID);
+	public DataAccessObject(String serverUrl, String username, String password, String catalogId, String repositoryId) {
+		this.serverUrl = serverUrl;
+		this.username = username;
+		this.password = password;
+		this.catalogId = catalogId;
+		this.repositoryId = repositoryId;
+		
+		AGServer server = new AGServer(serverUrl, username, password);
+		AGCatalog catalog = server.getCatalog(catalogId);
+		AGRepository myRepository = catalog.createRepository(repositoryId);
 		connection = myRepository.getConnection();
 	}
 
@@ -35,6 +41,26 @@ public class DataAccessObject {
 		if (connection != null) {
 			connection.clear();
 		}
+	}
+
+	public String getServerUrl() {
+		return serverUrl;
+	}
+
+	public String getCatalogId() {
+		return catalogId;
+	}
+
+	public String getRepositoryId() {
+		return repositoryId;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public String getPassword() {
+		return password;
 	}
 
 }
