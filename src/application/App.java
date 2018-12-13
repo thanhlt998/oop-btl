@@ -21,7 +21,7 @@ public class App {
 
 	private static int[] n = { 100, 5000, 60000, 300000, 600000 };
 	private static int[] m = { 200, 7000, 80000, 400000, 1200000 };
-
+	
 	private static List<String> queryList;
 	private static FileOutputStream outputStream;
 
@@ -45,7 +45,7 @@ public class App {
 		try {
 			outputStream.write(new String("Begin at " + new Date().toString() + "\n").getBytes());
 
-			for (int i = 0; i < 2; i++) {
+			for (int i = 0; i < n.length; i++) {
 				databaseGeneration.generateDatabase(n[i], m[i]);
 
 				outputStream.write(new String("(" + n[i] + ", " + m[i] + ")\t").getBytes());

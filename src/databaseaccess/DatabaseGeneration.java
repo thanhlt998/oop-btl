@@ -2,6 +2,7 @@ package databaseaccess;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import org.eclipse.rdf4j.model.IRI;
 
@@ -11,6 +12,7 @@ import multithread.RelationshipGenerationThread;
 import relationship.RelationshipGeneration;
 
 public class DatabaseGeneration {
+	private static final Random RANDOM = new Random();
 	private static final int NO_ENTITY_GENERATION_THREAD = 10;
 	private static final int NO_RELATIONSHIP_GENERATION_THREAD = 10;
 
@@ -80,7 +82,7 @@ public class DatabaseGeneration {
 		relationshipGeneration.setCty_eventorgRelationshipDescriptionList(cty_eventorgRelationshipDescriptionFileName);
 		relationshipGeneration.setCtyorg_timeRelationshipDescriptionList(ctyorg_timeRelationshipDescriptionFileName);
 
-		entityIRIList = new ArrayList<>();
+		entityIRIList = new ArrayList<>(600000);
 	}
 
 	private void generateEntity(int numberOfEntity) throws InterruptedException {
@@ -93,17 +95,33 @@ public class DatabaseGeneration {
 		 * 
 		 * noEntity = numberOfEntity; }
 		 */
-
+		
 		if (numberOfEntity > noEntity) {
-			List<EntityGenerationThread> threadList = new ArrayList<>();
-			for (int i = 0; i < NO_ENTITY_GENERATION_THREAD; i++) {
-				threadList.add(new EntityGenerationThread(randomEntityGeneration, dataInsertion, entityIRIList,
-						(numberOfEntity - noEntity) / NO_ENTITY_GENERATION_THREAD));
-			}
+			int noEntityNeed = numberOfEntity - noEntity;
+			if(noEntityNeed > 20000) {
+				while(noEntityNeed > 0) {
+					List<EntityGenerationThread> threadList = new ArrayList<>();
+					for (int j = 0; j < NO_ENTITY_GENERATION_THREAD; j++) {
+//						threadList.add(new EntityGenerationThread(randomEntityGeneration, dataInsertion, entityIRIList,
+//								(numberOfEntity - noEntity) / NO_ENTITY_GENERATION_THREAD));
+						threadList.add(new EntityGenerationThread(randomEntityGeneration, dataInsertion, entityIRIList,
+								(noEntityNeed > 20000 ? 20000 : noEntityNeed) / NO_ENTITY_GENERATION_THREAD));
+					}
 
-			for (EntityGenerationThread entityGenerationThread : threadList) {
+					for (EntityGenerationThread entityGenerationThread : threadList) {
+						entityGenerationThread.start();
+						entityGenerationThread.join();
+					}
+					
+					dataInsertion.pushIntoDatabase();
+					noEntityNeed -= 20000;
+				}
+			}
+			else {
+				EntityGenerationThread entityGenerationThread = new EntityGenerationThread(randomEntityGeneration, dataInsertion, entityIRIList, noEntityNeed);
 				entityGenerationThread.start();
 				entityGenerationThread.join();
+				dataInsertion.pushIntoDatabase();
 			}
 
 			noEntity = numberOfEntity;
@@ -127,17 +145,34 @@ public class DatabaseGeneration {
 		 */
 
 		if (numberOfRelationship > noRelationship) {
-			List<RelationshipGenerationThread> threadList = new ArrayList<>();
+			int noRelationshipNeed = numberOfRelationship - noRelationship;
+			if(noRelationshipNeed > 20000) {
+				while(noRelationshipNeed > 0) {
+					List<RelationshipGenerationThread> threadList = new ArrayList<>();
 
-			for (int i = 0; i < NO_RELATIONSHIP_GENERATION_THREAD; i++) {
-				threadList.add(new RelationshipGenerationThread(dataInsertion, relationshipGeneration, entityIRIList,
-						noEntity, (numberOfRelationship - noRelationship) / NO_RELATIONSHIP_GENERATION_THREAD));
+					for (int j = 0; j < NO_RELATIONSHIP_GENERATION_THREAD; j++) {
+//						threadList.add(new RelationshipGenerationThread(dataInsertion, relationshipGeneration, entityIRIList,
+//								noEntity, (numberOfRelationship - noRelationshipNeed) / NO_RELATIONSHIP_GENERATION_THREAD));
+						threadList.add(new RelationshipGenerationThread(dataInsertion, relationshipGeneration, entityIRIList,
+								noEntity, (noRelationshipNeed > 20000 ? 20000 : noRelationshipNeed) / NO_RELATIONSHIP_GENERATION_THREAD));
+					}
+
+					for (RelationshipGenerationThread relationshipGenerationThread : threadList) {
+						relationshipGenerationThread.start();
+						relationshipGenerationThread.join();
+					}
+					
+					dataInsertion.pushIntoDatabase();
+					noRelationshipNeed -= 20000;
+				}
 			}
-
-			for (RelationshipGenerationThread relationshipGenerationThread : threadList) {
+			else {
+				RelationshipGenerationThread relationshipGenerationThread = new RelationshipGenerationThread(dataInsertion, relationshipGeneration, entityIRIList, noEntity, noRelationshipNeed);
 				relationshipGenerationThread.start();
 				relationshipGenerationThread.join();
+				dataInsertion.pushIntoDatabase();
 			}
+			
 			noRelationship = numberOfRelationship;
 		}
 

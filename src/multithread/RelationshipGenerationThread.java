@@ -17,6 +17,10 @@ public class RelationshipGenerationThread extends Thread{
 	private int noEntity;
 	private int noRelationship;
 	
+	private IRI entity1;
+	private IRI entity2;
+	private IRI relationship;
+	
 	
 	public RelationshipGenerationThread(DataInsertion dataInsertion, RelationshipGeneration relationshipGeneration,
 			List<IRI> entityIRIList, int noEntity, int noRelationship) {
@@ -29,9 +33,9 @@ public class RelationshipGenerationThread extends Thread{
 	
 	@Override
 	public void run() {
-		IRI entity1 = null;
+		/*IRI entity1 = null;
 		IRI entity2 = null;
-		IRI relationship = null;
+		IRI relationship = null;*/
 
 		for (int i = 0; i < noRelationship; i++) {
 			entity1 = entityIRIList.get(RANDOM.nextInt(noEntity));
