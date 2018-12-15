@@ -2,17 +2,13 @@ package databaseaccess;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import org.eclipse.rdf4j.model.IRI;
 
 import entitygeneration.RandomEntityGeneration;
-import multithread.EntityGenerationThread;
-import multithread.RelationshipGenerationThread;
 import relationship.RelationshipGeneration;
 
 public class DatabaseGeneration {
-	private static final Random RANDOM = new Random();
 	private static final int NO_ENTITY_GENERATION_THREAD = 10;
 	private static final int NO_RELATIONSHIP_GENERATION_THREAD = 10;
 
@@ -172,7 +168,7 @@ public class DatabaseGeneration {
 				relationshipGenerationThread.join();
 				dataInsertion.pushIntoDatabase();
 			}
-			
+
 			noRelationship = numberOfRelationship;
 		}
 

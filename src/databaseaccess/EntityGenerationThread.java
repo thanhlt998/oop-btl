@@ -1,10 +1,9 @@
-package multithread;
+package databaseaccess;
 
 import java.util.List;
 
 import org.eclipse.rdf4j.model.IRI;
 
-import databaseaccess.DataInsertion;
 import entity.Entity;
 import entitygeneration.RandomEntityGeneration;
 

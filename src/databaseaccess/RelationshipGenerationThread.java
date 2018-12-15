@@ -1,11 +1,10 @@
-package multithread;
+package databaseaccess;
 
 import java.util.List;
 import java.util.Random;
 
 import org.eclipse.rdf4j.model.IRI;
 
-import databaseaccess.DataInsertion;
 import relationship.RelationshipGeneration;
 
 public class RelationshipGenerationThread extends Thread{
