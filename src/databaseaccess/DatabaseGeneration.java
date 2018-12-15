@@ -19,32 +19,32 @@ public class DatabaseGeneration {
 	private static int noDate = 1000;
 	private static String startDate = "2011-01-01";
 
-	private static String personLabelFileName = "personLabel.txt";
-	private static String personDescriptionFileName = "personDescription.txt";
+	private static String personLabelFileName = "resources/entity/personLabel.txt";
+	private static String personDescriptionFileName = "resources/entity/personDescription.txt";
 
-	private static String organizationLabelFileName = "organizationLabel.txt";
-	private static String organizationDescriptionFileName = "organizationDescription.txt";
-	private static String headquarterFileName = "headquarter.txt";
+	private static String organizationLabelFileName = "resources/entity/organizationLabel.txt";
+	private static String organizationDescriptionFileName = "resources/entity/organizationDescription.txt";
+	private static String headquarterFileName = "resources/entity/headquarter.txt";
 
-	private static String countryLabelFileName = "countryLabel.txt";
-	private static String countryDescriptionFileName = "countryDescription.txt";
+	private static String countryLabelFileName = "resources/entity/countryLabel.txt";
+	private static String countryDescriptionFileName = "resources/entity/countryDescription.txt";
 
-	private static String locationLabelFileName = "locationLabel.txt";
-	private static String locationDescriptionFileName = "locationDescription.txt";
+	private static String locationLabelFileName = "resources/entity/locationLabel.txt";
+	private static String locationDescriptionFileName = "resources/entity/locationDescription.txt";
 
-	private static String timeLabelFileName = "timeLabel.txt";
-	private static String timeDescriptionFileName = "timeDescription.txt";
+	private static String timeLabelFileName = "resources/entity/timeLabel.txt";
+	private static String timeDescriptionFileName = "resources/entity/timeDescription.txt";
 
-	private static String eventLabelFileName = "eventLabel.txt";
-	private static String eventDescriptionFileName = "eventDescription.txt";
+	private static String eventLabelFileName = "resources/entity/eventLabel.txt";
+	private static String eventDescriptionFileName = "resources/entity/eventDescription.txt";
 
-	private static String relationshipDescriptionFileName = "relationshipDescription.txt";
-	private static String per_perRelationshipDescriptionFileName = "per_perRelationshipDescription.txt";
-	private static String per_eventRelationshipDescriptionFileName = "per_eventRelationshipDescription.txt";
-	private static String perorg_orgeventRelationshipDescriptionFileName = "perorg_orgeventRelationshipDescription.txt";
-	private static String event_locctytimeRelationshipDescriptionFileName = "event_locctytimeRelationshipDescription.txt";
-	private static String cty_eventorgRelationshipDescriptionFileName = "cty_eventorgRelationshipDescription.txt";
-	private static String ctyorg_timeRelationshipDescriptionFileName = "ctyorg_timeRelationshipDescription.txt";
+	private static String relationshipDescriptionFileName = "resources/relationship/relationshipDescription.txt";
+	private static String per_perRelationshipDescriptionFileName = "resources/relationship/per_perRelationshipDescription.txt";
+	private static String per_eventRelationshipDescriptionFileName = "resources/relationship/per_eventRelationshipDescription.txt";
+	private static String perorg_orgeventRelationshipDescriptionFileName = "resources/relationship/perorg_orgeventRelationshipDescription.txt";
+	private static String event_locctytimeRelationshipDescriptionFileName = "resources/relationship/event_locctytimeRelationshipDescription.txt";
+	private static String cty_eventorgRelationshipDescriptionFileName = "resources/relationship/cty_eventorgRelationshipDescription.txt";
+	private static String ctyorg_timeRelationshipDescriptionFileName = "resources/relationship/ctyorg_timeRelationshipDescription.txt";
 
 	private DataAccessObject dataAcessObject;
 	private DataInsertion dataInsertion;

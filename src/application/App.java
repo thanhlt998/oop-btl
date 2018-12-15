@@ -70,7 +70,7 @@ public class App {
 	}
 
 	public void setQueryList(String fileName) {
-		queryList = Utils.readStringListFromFile("queries.txt");
+		queryList = Utils.readStringListFromFile(fileName);
 	}
 
 	public void setOutputStream(String ouputFileName) {
@@ -82,7 +82,9 @@ public class App {
 	}
 	
 	public static void main(String[] args) {
-		App app = new App("queries.txt", "result.txt");
+		System.out.println("Program begins.");
+		App app = new App("resources/queries.txt", "result.txt");
 		app.run();
+		System.out.println("Program ends.");
 	}
 }
