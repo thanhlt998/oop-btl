@@ -23,8 +23,10 @@ public class DataAccessObject {
 		
 		AGServer server = new AGServer(serverUrl, username, password);
 		AGCatalog catalog = server.getCatalog(catalogId);
+		catalog.deleteRepository(repositoryId);
 		AGRepository myRepository = catalog.createRepository(repositoryId);
 		connection = myRepository.getConnection();
+		
 	}
 
 	public AGRepositoryConnection getConnection() {
