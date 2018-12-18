@@ -7,7 +7,7 @@ select ?s where { ?s rdf:type <http://www.randomlink.org/ontology/Time> }
 select ?s where { ?s <http://www.randomlink.org/ontology/age> ?o . filter ((?o >= 18) && (?o <= 65)) }
 select ?s where { ?s <http://www.randomlink.org/ontology/headquarter> ?o . filter regex(?o, "Ấn Độ") }
 select ?s ?p ?o where { ?s ?p ?o . filter regex(?o, "Ấn Độ")}
-select ?s where { ?s <http://www.randomlink.org/ontology/label> ?o . filter regex(?o, "Thành")}
+ask {?s rdf:type <http://www.randomlink.org/ontology/Person> . ?s <http://www.randomlink.org/ontology/label> ?o . filter regex(?o, "Thành")}
 (select (?person ?label ?desc) (q ?person !rdf:type !<http://www.randomlink.org/ontology/Person>) (q ?person !<http://www.randomlink.org/ontology/label> ?label) (q ?person !<http://www.randomlink.org/ontology/description> ?desc))
 (select (?personlabel ?age) (q ?person !<http://www.randomlink.org/ontology/age> ?age) (upi< !"18"^^xsd:int ?age) (upi< ?age !"65"^^xsd:int) (q ?person !<http://www.randomlink.org/ontology/label> ?personlabel))
 (select (?event ?country) (q ?event !rdf:type !<http://www.randomlink.org/ontology/Event>) (q ?country !rdf:type !<http://www.randomlink.org/ontology/Country>) (q ?event !<http://www.randomlink.org/relationship/diễn ra> ?country))
