@@ -44,20 +44,32 @@ public class App {
 
 		try {
 			outputStream.write(new String("Begin at " + new Date().toString() + "\n").getBytes());
+			
+			outputStream.write(String.format("%-20s", "(n, m)").getBytes());
+			for (int i = 1; i <= 20; i++) {
+				outputStream.write(String.format("%-8s", "|" + i).getBytes());
+			}
+			
+			outputStream.write(new String("\n").getBytes());
+			for(int i = 0; i < 180; i++) {
+				outputStream.write(new String("-").getBytes());
+			}
+			outputStream.write(new String("\n").getBytes());
+			
 
 			for (int i = 0; i < n.length; i++) {
 				databaseGeneration.generateDatabase(n[i], m[i]);
 
-				outputStream.write(new String("(" + n[i] + ", " + m[i] + ")\t").getBytes());
+				outputStream.write(String.format("%-20s", "(" + n[i] + ", " + m[i] + ")").getBytes());
 				int j;
 				for (j = 0; j < 10; j++) {
 					long queryTime = query.querySPARQLTime(queryList.get(j));
-					outputStream.write(new String(queryTime + "\t").getBytes());
+					outputStream.write(String.format("%-8s", "|" + queryTime).getBytes());
 				}
 
 				for (; j < 20; j++) {
 					long queryTime = query.queryPROLOGTime(queryList.get(j));
-					outputStream.write(new String(queryTime + "\t").getBytes());
+					outputStream.write(String.format("%-8s", "|" + queryTime).getBytes());
 				}
 
 				outputStream.write(new String("\n").getBytes());
