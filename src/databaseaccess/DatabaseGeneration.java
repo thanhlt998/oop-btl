@@ -91,15 +91,16 @@ public class DatabaseGeneration {
 		 * 
 		 * noEntity = numberOfEntity; }
 		 */
-		
+
 		if (numberOfEntity > noEntity) {
 			int noEntityNeed = numberOfEntity - noEntity;
-			if(noEntityNeed > 20000) {
-				while(noEntityNeed > 0) {
+			if (noEntityNeed > 20000) {
+				while (noEntityNeed > 0) {
 					List<EntityGenerationThread> threadList = new ArrayList<>();
 					for (int j = 0; j < NO_ENTITY_GENERATION_THREAD; j++) {
-//						threadList.add(new EntityGenerationThread(randomEntityGeneration, dataInsertion, entityIRIList,
-//								(numberOfEntity - noEntity) / NO_ENTITY_GENERATION_THREAD));
+						// threadList.add(new EntityGenerationThread(randomEntityGeneration,
+						// dataInsertion, entityIRIList,
+						// (numberOfEntity - noEntity) / NO_ENTITY_GENERATION_THREAD));
 						threadList.add(new EntityGenerationThread(randomEntityGeneration, dataInsertion, entityIRIList,
 								(noEntityNeed > 20000 ? 20000 : noEntityNeed) / NO_ENTITY_GENERATION_THREAD));
 					}
@@ -108,13 +109,13 @@ public class DatabaseGeneration {
 						entityGenerationThread.start();
 						entityGenerationThread.join();
 					}
-					
+
 					dataInsertion.pushIntoDatabase();
 					noEntityNeed -= 20000;
 				}
-			}
-			else {
-				EntityGenerationThread entityGenerationThread = new EntityGenerationThread(randomEntityGeneration, dataInsertion, entityIRIList, noEntityNeed);
+			} else {
+				EntityGenerationThread entityGenerationThread = new EntityGenerationThread(randomEntityGeneration,
+						dataInsertion, entityIRIList, noEntityNeed);
 				entityGenerationThread.start();
 				entityGenerationThread.join();
 				dataInsertion.pushIntoDatabase();
@@ -142,28 +143,31 @@ public class DatabaseGeneration {
 
 		if (numberOfRelationship > noRelationship) {
 			int noRelationshipNeed = numberOfRelationship - noRelationship;
-			if(noRelationshipNeed > 20000) {
-				while(noRelationshipNeed > 0) {
+			if (noRelationshipNeed > 20000) {
+				while (noRelationshipNeed > 0) {
 					List<RelationshipGenerationThread> threadList = new ArrayList<>();
 
 					for (int j = 0; j < NO_RELATIONSHIP_GENERATION_THREAD; j++) {
-//						threadList.add(new RelationshipGenerationThread(dataInsertion, relationshipGeneration, entityIRIList,
-//								noEntity, (numberOfRelationship - noRelationshipNeed) / NO_RELATIONSHIP_GENERATION_THREAD));
-						threadList.add(new RelationshipGenerationThread(dataInsertion, relationshipGeneration, entityIRIList,
-								noEntity, (noRelationshipNeed > 20000 ? 20000 : noRelationshipNeed) / NO_RELATIONSHIP_GENERATION_THREAD));
+						// threadList.add(new RelationshipGenerationThread(dataInsertion,
+						// relationshipGeneration, entityIRIList,
+						// noEntity, (numberOfRelationship - noRelationshipNeed) /
+						// NO_RELATIONSHIP_GENERATION_THREAD));
+						threadList.add(new RelationshipGenerationThread(dataInsertion, relationshipGeneration,
+								entityIRIList, noEntity, (noRelationshipNeed > 20000 ? 20000 : noRelationshipNeed)
+										/ NO_RELATIONSHIP_GENERATION_THREAD));
 					}
 
 					for (RelationshipGenerationThread relationshipGenerationThread : threadList) {
 						relationshipGenerationThread.start();
 						relationshipGenerationThread.join();
 					}
-					
+
 					dataInsertion.pushIntoDatabase();
 					noRelationshipNeed -= 20000;
 				}
-			}
-			else {
-				RelationshipGenerationThread relationshipGenerationThread = new RelationshipGenerationThread(dataInsertion, relationshipGeneration, entityIRIList, noEntity, noRelationshipNeed);
+			} else {
+				RelationshipGenerationThread relationshipGenerationThread = new RelationshipGenerationThread(
+						dataInsertion, relationshipGeneration, entityIRIList, noEntity, noRelationshipNeed);
 				relationshipGenerationThread.start();
 				relationshipGenerationThread.join();
 				dataInsertion.pushIntoDatabase();
